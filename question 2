@@ -1,0 +1,82 @@
+from comprpg_classes import Player, Game
+from comprpg_data import all_characters, all_items
+from ast import literal_eval
+def load_comprpg_game(filename): 
+    # TODO: Write your function here
+    """
+    """
+    # extract player from the file
+    def extract_characters(characters_data):
+        """
+        """
+        characters = []
+        # for lines in character_lines:
+        # character = literal_eval(lines.split(": ", 1)[1])
+        # keep the relevant keys only
+        for character in characters_data:
+            
+            for contents in ("name, health, defence, ")
+            characters.append({
+                "name": character["name"],
+                "health": character["health"],
+                "defence": character["defence"],
+                "effects": character["effects"],
+                "defeated": character["defeated"]
+            })
+        return characters
+    # extract game history
+    def extract_history(histor_lines):
+        history = []
+        for line in history_lines:
+            history.append(literal_eval(line.split(': ', 1)[1]))
+        return history
+       
+    # 
+    def extract_player_data(player_lines):
+        """
+        """
+        part = player_lines[0].split(': ')
+        if len(part) > 1:
+            player_id = int(part[1])
+        # player_id = int(lines[0].split(": ")[1])
+        characters = extract_characters(player_lines[1:6])
+        money = int(player_lines[6].split(": ")[1])
+        electricity = int(player_lines[7].split(": ")[1])
+        active_characters = literal_eval(player_lines[8].split(": ")[1])
+        items = literal_eval(lines[9].split(": ")[1])
+        n_active = int(player_lines[10].split(': ')[1])
+        return Player(player_id, characters, money, electricity, 
+                      active_characters, items, n_active)
+    try:
+        with open(filename, "r") as file:
+            lines = file.read().splitlines()
+        # Check if the file starts with the correct header
+        if not lines or lines[0] != "comprpg save file":
+            return None
+        # Remove empty lines and parse sections
+        lines = [line for line in lines if line.strip()]
+        # split the file into relevant parts
+        player1_lines = lines[2:13]
+        player2_lines = lines[14:25]
+        turn = int(lines[26].split(': ')[1])
+        history_lines = lines[28:]
+        # extract players and game information
+        player1 = extract_player_data(player1_lines)
+        player2 = extract_player_data(player2_lines)
+        history = extract_history(history_lines)
+        return Game([player1, player2], turn, history)
+    except FileNotFoundError:
+        return None
+       
+ 
+load_comprpg_game("example_game2.txt")
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
